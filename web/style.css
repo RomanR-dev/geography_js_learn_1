@@ -1,0 +1,27 @@
+body {
+    font-family: "Times New Roman", Helvetica, sans-serif;
+    /*padding: 3rem;*/
+}
+
+h1 > span {
+    color: darkred;
+    accent-color: darkblue;
+}
+
+h1:hover {
+    color: #e63f01;
+}
+
+button {
+    border: 0;
+    cursor: pointer;
+    box-shadow: 0 0 12px darkred;
+}
+
+button:hover {
+    background-color: red;
+}
+
+input {
+    margin: 3px;
+}
