@@ -1,5 +1,7 @@
 const countryElement = document.querySelector('.country')
 const inputElement = document.querySelector('.country_1')
+const regularMap = document.querySelector('.Regular')
+const satteliteMap = document.querySelector('.Satellite')
 
 const memes = [
     "https://media.istockphoto.com/id/538665020/photo/internet-meme-why-you-no-rage-face-3d-illustration.jpg?s=612x612&w=0&k=20&c=5D_g8Jy8kqg5Op2bb4RvcH8_6y0HGPqt29TKDrEqLyM=",
@@ -17,6 +19,18 @@ function parseInput() {
     countryElement.textContent = `chosen country/city ${country}`
     inputElement.value = ''
 
+    console.log(`${satteliteMap.checked} -sat , ${regularMap.checked} - reg`)
+    let mapType = ''
+    if (satteliteMap.checked) {
+        mapType = satteliteMap.value
+    }
+    else if (regularMap.checked) {
+        mapType = regularMap.value
+    }
+    else {
+        mapType = 'map'
+    }
+
     const map = document.querySelector('.country_img')
     getCountryCoordinates(country).then((coords) => {
         if (!coords) {
@@ -25,12 +39,13 @@ function parseInput() {
             map.src = memes[randomIndex]
         } else {
             const {lat, lon} = coords
-            const fullImgUrl = getCountryMapImage(country, lat, lon)
+            const fullImgUrl = getCountryMapImage(country, lat, lon, mapType)
             map.src = fullImgUrl
             map.alt = countryElement.textContent
         }
     })
 }
+
 
 inputElement.addEventListener('change', () => {
     parseInput()
@@ -38,13 +53,13 @@ inputElement.addEventListener('change', () => {
 
 
 // Function to get the OpenStreetMap image URL for a given country
-function getCountryMapImage(countryName, lat, lon) {
+function getCountryMapImage(countryName, lat, lon, mapType) {
     // Base URL for OpenStreetMap Static Maps API
     const baseUrl = 'https://static-maps.yandex.ru/1.x/'
 
     // Construct the map URL
     const params = new URLSearchParams({
-        l: 'map',           // Map layer (map for roadmap, sat for satellite)
+        l: mapType,           // Map layer (map for roadmap, sat for satellite)
         ll: `${lon},${lat}`,          // Center coordinates (longitude, latitude) - default to (0,0)
         spn: '20,10',       // Map span (longitude span, latitude span)
         size: '600,400',    // Map size (width, height in pixels)
